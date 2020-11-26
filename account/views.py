@@ -1,53 +1,49 @@
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from .serializers import RegisterSerializer, LoginSerializer
+"""Создаем представления для форм"""
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView, TemplateView
 
-
-def send_activation_mail(user):
-    code = user.create_activation_code()
-    send_mail('Активация аккаунта',
-              f'Вы успешно зарегистрировались. Пожалуйста активируйте свой аккаунт. Для этого пройдите по ссылке http://127.0.0.1:8000/accounts/activate/{code}/',
-              'test@test.com',
-              [user.email, ])
+from .forms import RegistrationForm, ChangePasswordForm
 
 
-class RegisterView(APIView):
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        serializer = RegisterSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.save()
-            send_activation_mail(user)
-            return Response('Аккаунт успешно создан')
+class RegistrationView(CreateView):
+    model = User
+    form_class = RegistrationForm
+    template_name = 'account/registration.html'
+    success_url = reverse_lazy('index-page')
 
 
-class ActivationView(APIView):
-    def get(self, request, activation_code):
-        User = get_user_model()
-        user = get_object_or_404(User, activation_code=activation_code)
-        user.activate_with_code(activation_code)
-        return Response('Ваш аккаунт успешно активирован')
+class SigninView(LoginView):
+    """Создаем вид для входа на сайт"""
+    template_name = 'account/login.html'
+    success_url = reverse_lazy('index-page')
 
 
-class LoginView(ObtainAuthToken):
-    serializer_class = LoginSerializer
+class PasswordChangeView(LoginRequiredMixin, FormView):
+    success_url = reverse_lazy('change-password-done')
+    form_class = ChangePasswordForm
+    template_name = 'account/change_password.html'
+    login_url = reverse_lazy('login')
+
+    def get_form_kwargs(self, **kwargs):
+        """Чтобы передавать данные в обьект"""
+        kwargs = super().get_form_kwargs()
+        print(kwargs)
+        kwargs['user'] = self.request.user
+        print(kwargs)
+        return kwargs
+
+    def form_valid(self, form):
+        """Здесь мы сохраняем данные"""
+        form.save()
+        return super().form_valid(form)
 
 
-class LogoutView(APIView):
-    permission_classes = [IsAuthenticated, ]
-
-    def post(self, request):
-        user = request.user
-        Token.objects.filter(user=user).delete()
-        return Response('Вы успешно вышли из своего аккаунта')
-
-
-
-
+class PasswordChangeDoneView(TemplateView):  # TemplateVIew зависит только от шаблона
+    """Здесь мы определяем вид при успешном изменении пароля
+        Здесь мы определяем вид для изменения пароля
+    """
+    template_name = 'account/change_password_done.html'
