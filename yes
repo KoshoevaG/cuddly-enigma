@@ -1,0 +1,24 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+# Your branch is ahead of 'origin/main' by 2 commits.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	new file:   account/migrations/0001_initial.py
+#	modified:   account/views.py
+#	modified:   mainapp/templates/mainapp/product_detail.html
+#	new file:   media/odnotonnaya-vodolazka-chernyj-zhenshiny-razmery-40-54-xt125_3_lpr1.jpg
+#	new file:   media/platje-s-blestkami-zolotistyj-zhenshiny-razmery-40-54-xs973_1_lpr1.jpg
+#	new file:   media/sapogi-pod-krokodilovuyu-kozhu-chernyj-zhenshiny-razmery-40-54-xq165_1_lpr1.jpg
+#	new file:   media/svitshot-s-risunkom-eco-conception-khaki-muzhchiny-s-xxl-xn599_3_lpr1.jpg
+#	new file:   media/svitshot-s-risunkom-eco-conception-khaki-muzhchiny-s-xxl-xn599_3_lpr1_MTATGRX.jpg
+#	new file:   media/svitshot-s-risunkom-eco-conception-khaki-muzhchiny-s-xxl-xn599_3_lpr1_sxLXGUZ.jpg
+#	new file:   media/tkanevye-kedy-goluboj-muzhchiny-s-xxl-xf812_1_lpr1.jpg
+#	new file:   media/uzkaya-rubashka-belyj-muzhchiny-s-xxl-xh658_12_lpr1.jpg
+#	modified:   requirements.txt
+#	modified:   shop/settings.py
+#
+

@@ -2,4 +2,3 @@ Django == 3.1
 psycopg2-binary == 2.8.6
 wheel
 Pillow == 8.0.1
-django-filter
